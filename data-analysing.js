@@ -28,19 +28,30 @@ const readFile = async (fileName) => {
   return data;
 };
 
+//// funcion filter data
+const filterData = async (data) => {
+  try {
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].Phone_Number.includes("+385") && data[i].Phone_Number !== "")
+        console.log(data[i].Title, data[i].Phone_Number);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const main = async () => {
   const filesArray = await readFilesInsideDirectory(process.cwd() + "/data");
-
+  console.log("Files Array", filesArray);
   // read individual files
   // -->> some kind of loop
   //  ---- ---- > send file name to function and just wait for the result of the data inside :)
 
   filesArray.forEach(async (fileName) => {
-    let data = await readFile(fileName);
-    console.log(data);
+    const data = await readFile(fileName);
+    const filteredData = await filterData(data);
+    // console.log(filteredData);
   });
-
-  console.log("Files Array", filesArray);
 };
 
 // start executing the program
