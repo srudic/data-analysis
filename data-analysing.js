@@ -1,46 +1,28 @@
-// Node.js program to demonstrate
-// the fs.readFile() method
-
-// Include fs module
-// const fs = require("fs");
-
-// Use fs.readFile() method to read the file
-// fs.readFile(
-//   "data/apartments-near-Ciovo.json",
-//   //   "Users/Sanja/Desktop/analiza-podataka-apartmani/data/apartments-near-Ciovo.json", --> not working
-//   "utf8",
-//   function (err, data) {
-//     // Display the file content
-//     const parsedData = JSON.parse(data);
-
-//     console.log(parsedData.length);
-//     // console.log(data.map((res) => console.log(res)));
-//     for (let i = 0; i < parsedData.length; i++) {
-//       if (
-//         !parsedData[i].Phone_Number.includes("+385") &&
-//         parsedData[i].Phone_Number !== ""
-//       )
-//         console.log(parsedData[i].Phone_Number);
-//     }
-//   }
-// );
-
-// console.log("readFile called");
-
-//requiring path and fs modules
 const path = require("path");
-const fs = require("fs");
-//joining path of directory
-const directoryPath = path.join(__dirname, "data");
-//passsing directoryPath and callback function
-fs.readdir(directoryPath, function (err, files) {
-  //handling error
-  if (err) {
-    return console.log("Unable to scan directory: " + err);
+const fs = require("fs/promises");
+
+//// function for reading all files inside directory
+const readFilesInsideDirectory = async (directoryPath) => {
+  const arrayOfFiles = [];
+  try {
+    const nameOfFilesObject = await fs.readdir(directoryPath);
+    for (let filename of nameOfFilesObject) {
+      arrayOfFiles.push(filename);
+    }
+  } catch (err) {
+    console.log(err);
   }
-  //listing all files using forEach
-  files.forEach(function (file) {
-    // Do whatever you want to do with the file
-    console.log(file);
-  });
-});
+  return arrayOfFiles;
+};
+
+const main = async () => {
+  const filesArray = await readFilesInsideDirectory(process.cwd() + "/data");
+
+  // read individual files
+  // -->> some kind of loop
+  //  ---- ---- > send file name to function and just wait for the result of the data inside :)
+  console.log(filesArray);
+};
+
+// start executing the program
+main();
